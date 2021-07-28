@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { citiesPopulation } from "./data/data";
+import TreeMap, { Tooltip } from "devextreme-react/tree-map";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TreeMap
+      id="treemap"
+      dataSource={citiesPopulation}
+      title="The Most Populated Cities by Continents"
+    >
+      <Tooltip
+        enabled={true}
+        format="thousands"
+        customizeTooltip={customizeTooltip}
+      />
+    </TreeMap>
   );
+}
+
+function customizeTooltip(arg: any) {
+  const data = arg.node.data;
+
+  return {
+    text: arg.node.isLeaf()
+      ? `<span class="city">${data.name}</span> (${data.country})<br/>Population: ${arg.valueText}`
+      : null,
+  };
 }
 
 export default App;
